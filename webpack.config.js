@@ -13,8 +13,7 @@ const config = {
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Custom template',
-      template: 'index.html',
-      chunks: ['index']
+      template: 'index.html'
     })
   ],
 
@@ -52,6 +51,11 @@ const config = {
           'sass-loader'
         ]
       },
+
+      {
+        test: /\.hbs/,
+        loader: 'handlebars-loader'
+      }
 
 
     ]
