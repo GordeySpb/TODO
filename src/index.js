@@ -1,61 +1,93 @@
 import './scss/main.scss';
-// import render from './templates/todo.hbs';
-// console.log(render)
+import tempalte from './templates/todo.hbs';
+import pubSub from './helpers/pubsub.js';
 
-const store = [
-    {
-        name: 'item 1'
-    },
 
-    {
-        name: 'item 2'
-    },
 
-    {
-        name: 'item 3'
-    },
-];
 
 const todo = document.querySelector('.todo__list');
 const addBtn = document.querySelector('.todo__add-btn');
 const saveBtn = document.querySelector('.todo__save-btn');
 const editBtn = document.querySelector('.todo__edit-btn');
 const deleteBtn = document.querySelector('.todo__delete-btn');
+const input = document.querySelector('.todo-input');
 
-function creatItem(item) {
-    const li = document.createElement('li');
-    li.classList.add('todo__item');
 
-    const name = document.createElement('div');
-    name.classList.add('todo__name');
-    name.innerText = item.name;
+let store = [];
+let inputValue = '';
 
-    const edBtn = document.createElement('button');
-    edBtn.classList.add('btn', 'todo__edit-btn');
-    edBtn.innerText = 'edit';
 
-    const delBtn = document.createElement('button');
-    delBtn.classList.add('btn', 'todo__delete-btn');
-    delBtn.innerText = 'delete';
+function addToStore(item) {
+    store.push(item);
 
-    li.appendChild(name);
-    li.appendChild(edBtn);
-    li.appendChild(delBtn);
-
-    return li;
-};
-
-function renderList(list) {
-    list.innerHTML = '';
-    list.forEach(item => {
-       const li = creatItem(item)
-
-        todo.appendChild(li);
-    });
-
+    pubSub.emit('update')
 }
-// render({
-//     items : store
-// })
-renderList(store)
+
+function render() {
+    const html = tempalte({
+        items: store
+    })
+
+    todo.innerHTML = html;
+}
+
+
+input.addEventListener('keyup', e => {
+    inputValue = e.target.value;
+
+})
+
+todo.addEventListener('click', e => {
+    if (e.target.classList.contains('todo__delete-btn')) {
+        const li = e.target.closest('li');
+        const id = li.getAttribute('data-id');
+        pubSub.emit('delTask', id)
+            
+    }
+
+    if (e.target.classList.contains('todo__edit-btn')) {
+        const editBtn = e.target;
+        editBtn.innerText = 'Save';
+
+        const editInput = editBtn.previousElementSibling;
+        editInput.classList.toggle('hidden');
+
+        const taskName = editInput.previousElementSibling;
+        taskName.classList.toggle('hidden');
+        
+        const editTaskName = editInput.value;
+        
+        taskName.innerText = editTaskName;
+        
+    }
+
+})
+
+
+
+function deleteTask(id) {
+    store = store.filter(elem => elem.id !== +id)
+
+    pubSub.emit('update')
+}
+
+
+addBtn.addEventListener('click', e => {
+    if (inputValue === '') return;
+    
+    pubSub.emit('addTodo', {
+        name: inputValue,
+        id: Date.now()
+    })
+
+    input.value = '';
+
+})
+
+
+pubSub.subscribe('addTodo', addToStore);
+pubSub.subscribe('delTask', deleteTask);
+pubSub.subscribe('update', render);
+
+
 

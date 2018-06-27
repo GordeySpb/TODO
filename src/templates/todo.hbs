@@ -1,7 +1,8 @@
 {{#each items}}
-<li class="todo__item">
+<li class="todo__item" data-id="{{id}}">
     <div class="todo__name">{{name}}</div>
+    <input type="text" class="todo__input hidden">
     <button class="btn todo__edit-btn">Edit</button>
-    <button class="btn todo__delete-btn">Delete</button>
+    <button class="btn todo__delete-btn" id="delete">Delete</button>
 </li>
 {{/each}}
