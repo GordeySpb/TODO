@@ -8,8 +8,6 @@ import pubSub from './helpers/pubsub.js';
 const todo = document.querySelector('.todo__list');
 const addBtn = document.querySelector('.todo__add-btn');
 const saveBtn = document.querySelector('.todo__save-btn');
-const editBtn = document.querySelector('.todo__edit-btn');
-const deleteBtn = document.querySelector('.todo__delete-btn');
 const input = document.querySelector('.todo-input');
 
 
@@ -38,30 +36,77 @@ input.addEventListener('keyup', e => {
 })
 
 todo.addEventListener('click', e => {
+    const li = document.querySelector('.todo__item');
+    const id = li.getAttribute('data-id');
+
     if (e.target.classList.contains('todo__delete-btn')) {
-        const li = e.target.closest('li');
-        const id = li.getAttribute('data-id');
         pubSub.emit('delTask', id)
-            
+
     }
 
-    if (e.target.classList.contains('todo__edit-btn')) {
-        const editBtn = e.target;
-        editBtn.innerText = 'Save';
 
-        const editInput = editBtn.previousElementSibling;
-        editInput.classList.toggle('hidden');
 
-        const taskName = editInput.previousElementSibling;
-        taskName.classList.toggle('hidden');
-        
-        const editTaskName = editInput.value;
-        
-        taskName.innerText = editTaskName;
+
+    if (e.target.classList.contains('js-edit-btn')) {
+        let buttonID = +e.target.getAttribute('data-id');
+        let allLi = document.querySelectorAll('.todo__item');
+
+        Array.prototype.forEach.call(allLi, (elem) => {
+            let elemID = +elem.getAttribute('data-id');
+    
+            if (elemID === buttonID) {
+                    const editInput = elem.querySelector('.todo__input');
+                    editInput.classList.toggle('hidden');
+    
+                    const editBtn = elem.querySelector('.js-edit-btn');
+                    // editBtn.classList.add('hidden');
+    
+                    // const saveBtn = elem.querySelector('.js-save-btn');
+                    // saveBtn.classList.remove('hidden');
+    
+                    const taskName = elem.querySelector('.todo__name');
+                    taskName.classList.toggle('hidden');
+
+                    console.log(editInput.value)
+                    
+                }
+    
+            return elem
+        })
+
+        // pubSub.emit('editTask', allLi, buttonID)
+
+    }
+
+
+    if (e.target.classList.contains('js-save-btn')) {
         
     }
 
 })
+
+function editTask(list, id) {
+    Array.prototype.forEach.call(list, (elem) => {
+        let elemID = +elem.getAttribute('data-id');
+
+        if (elemID === id) {
+                const editInput = elem.querySelector('.todo__input');
+                editInput.classList.toggle('hidden');
+
+                const editBtn = elem.querySelector('.js-edit-btn');
+                editBtn.classList.add('hidden');
+
+                const saveBtn = elem.querySelector('.js-save-btn');
+                saveBtn.classList.remove('hidden');
+
+                const taskName = elem.querySelector('.todo__name');
+                taskName.classList.toggle('hidden');
+                
+            }
+
+        return elem
+    })
+}
 
 
 
@@ -74,7 +119,7 @@ function deleteTask(id) {
 
 addBtn.addEventListener('click', e => {
     if (inputValue === '') return;
-    
+
     pubSub.emit('addTodo', {
         name: inputValue,
         id: Date.now()
@@ -87,7 +132,5 @@ addBtn.addEventListener('click', e => {
 
 pubSub.subscribe('addTodo', addToStore);
 pubSub.subscribe('delTask', deleteTask);
+pubSub.subscribe('editTask', editTask)
 pubSub.subscribe('update', render);
-
-
-

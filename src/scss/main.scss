@@ -85,12 +85,6 @@
     background-color: #ffffff;
     margin-bottom: 3px;
 
-    &:hover {
-        .todo__edit-btn, .todo__delete-btn {
-            display: block;
-        }
-
-    }
 }
 
 .todo__name {
@@ -129,9 +123,9 @@
     }
 }
 
-.todo__edit-btn, .todo__delete-btn {
+.todo__edit-btn, .todo__delete-btn, .todo__save-btn {
     margin-right: 10px;
-    display: none;
+    
 }
 
 
