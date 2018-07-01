@@ -84,7 +84,31 @@
     align-items: center;
     background-color: #ffffff;
     margin-bottom: 3px;
+    .todo__save-btn {
+        display: none;
+    }
 
+    .todo__input {
+        display: none;
+    }
+}
+
+.todo__item.todo__item_mode_edit {
+    .todo__save-btn {
+        display: block;
+    }
+
+    .todo__input {
+        display: block;
+    }
+
+    .todo__edit-btn {
+        display: none;
+    }
+
+    .todo__name {
+        display: none;
+    }
 }
 
 .todo__name {

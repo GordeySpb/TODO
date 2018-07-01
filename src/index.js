@@ -47,41 +47,32 @@ todo.addEventListener('click', e => {
     }
 
 
-
-
     if (e.target.classList.contains('js-edit-btn')) {
         const editBtnId = +e.target.getAttribute('data-id');
-        
-        Array.prototype.forEach.call(allLi, (elem) => {
-            let elemID = +elem.getAttribute('data-id');
+        const currentLi = findCurrentIdElement(allLi, editBtnId);
+        const currentStateElement = store.find(todo => todo.id === editBtnId);
+        const input = currentLi.querySelector('.todo__input');
 
-            if (elemID === editBtnId) {
-                const editInput = elem.querySelector('.todo__input');
-                editInput.classList.toggle('hidden');
-
-                const editBtn = elem.querySelector('.js-edit-btn');
-                editBtn.classList.add('hidden');
-
-                const saveBtn = elem.querySelector('.js-save-btn');
-                saveBtn.classList.remove('hidden');
-
-                const taskName = elem.querySelector('.todo__name');
-                taskName.classList.toggle('hidden');
-            }
-
-            return elem
-        })
-
-
+        input.value = currentStateElement.name;
+        currentLi.classList.add('todo__item_mode_edit');
     }
 
 
     if (e.target.classList.contains('js-save-btn')) {
-        
+        const saveBtnId = +e.target.getAttribute('data-id');
+        const currentLi = findCurrentIdElement(allLi, saveBtnId);
 
+        currentLi.classList.remove('todo__item_mode_edit');
+        
     }
 
 })
+
+function findCurrentIdElement(allLi, searchId) {
+    return Array.prototype.find.call(allLi, (elem) => {
+        return +elem.getAttribute('data-id') === searchId;
+    })
+}
 
 
 
