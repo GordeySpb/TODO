@@ -38,6 +38,8 @@ input.addEventListener('keyup', e => {
 todo.addEventListener('click', e => {
     const li = document.querySelector('.todo__item');
     const id = li.getAttribute('data-id');
+    const allLi = document.querySelectorAll('.todo__item');
+
 
     if (e.target.classList.contains('todo__delete-btn')) {
         pubSub.emit('delTask', id)
@@ -48,48 +50,12 @@ todo.addEventListener('click', e => {
 
 
     if (e.target.classList.contains('js-edit-btn')) {
-        let buttonID = +e.target.getAttribute('data-id');
-        let allLi = document.querySelectorAll('.todo__item');
-
+        const editBtnId = +e.target.getAttribute('data-id');
+        
         Array.prototype.forEach.call(allLi, (elem) => {
             let elemID = +elem.getAttribute('data-id');
-    
-            if (elemID === buttonID) {
-                    const editInput = elem.querySelector('.todo__input');
-                    editInput.classList.toggle('hidden');
-    
-                    const editBtn = elem.querySelector('.js-edit-btn');
-                    // editBtn.classList.add('hidden');
-    
-                    // const saveBtn = elem.querySelector('.js-save-btn');
-                    // saveBtn.classList.remove('hidden');
-    
-                    const taskName = elem.querySelector('.todo__name');
-                    taskName.classList.toggle('hidden');
 
-                    console.log(editInput.value)
-                    
-                }
-    
-            return elem
-        })
-
-        // pubSub.emit('editTask', allLi, buttonID)
-
-    }
-
-
-    if (e.target.classList.contains('js-save-btn')) {
-        
-    }
-
-})
-
-function editTask(list, id) {
-    Array.prototype.forEach.call(list, (elem) => {
-        let elemID = +elem.getAttribute('data-id');
-
-        if (elemID === id) {
+            if (elemID === editBtnId) {
                 const editInput = elem.querySelector('.todo__input');
                 editInput.classList.toggle('hidden');
 
@@ -101,12 +67,23 @@ function editTask(list, id) {
 
                 const taskName = elem.querySelector('.todo__name');
                 taskName.classList.toggle('hidden');
-                
             }
 
-        return elem
-    })
-}
+            return elem
+        })
+
+
+    }
+
+
+    if (e.target.classList.contains('js-save-btn')) {
+        
+
+    }
+
+})
+
+
 
 
 
@@ -132,5 +109,5 @@ addBtn.addEventListener('click', e => {
 
 pubSub.subscribe('addTodo', addToStore);
 pubSub.subscribe('delTask', deleteTask);
-pubSub.subscribe('editTask', editTask)
+// pubSub.subscribe('editTask', editTask)
 pubSub.subscribe('update', render);
