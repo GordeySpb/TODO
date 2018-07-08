@@ -113,6 +113,10 @@
     }
 }
 
+.todo-checkbox {
+    margin-left: 10px;
+}
+
 .todo__name {
     margin-right: auto;
     color: black;
@@ -158,6 +162,11 @@
 
 .todo__save-btn {
     margin-right: 10px;
+}
+
+.checked {
+    text-decoration: line-through;
+    background: gray;
 }
 
 .hidden {

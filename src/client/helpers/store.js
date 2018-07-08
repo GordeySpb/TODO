@@ -15,7 +15,7 @@ function reducer(state = initialState, {type, payload}) {
             return state.map(elem => {
                 if (elem.id === +payload.id) {
                     return {
-                        payload 
+                        ...payload 
                     }
                 }
                 return elem;

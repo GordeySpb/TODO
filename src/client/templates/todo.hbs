@@ -1,5 +1,6 @@
 {{#each items}}
 <li class="todo__item" data-id="{{id}}">
+    <input type="checkbox" class="todo-checkbox js-checkbox" data-id="{{id}}">
     <div class="todo__name">{{name}}</div>
     <input type="text" class="todo__input">
     <button class="btn todo__edit-btn js-edit-btn" data-id="{{id}}">Edit</button>

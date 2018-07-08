@@ -12,6 +12,18 @@ const addBtn = document.querySelector('.todo__add-btn');
 const input = document.querySelector('.todo-input');
 
 
+store.subscribe(() => {
+    render(store.getState());
+    saveToLocalStorage(store);
+});
+
+
+try {
+    const todos = localStorage.getItem('list') ? JSON.parse(localStorage.getItem('list')) : [];
+    store.dispatch(addTodosAction(todos))
+} catch (e) {
+    console.log(e)
+}
 
 
 function render(store) {
@@ -20,7 +32,9 @@ function render(store) {
     })
 
     todo.innerHTML = html;
+
 };
+
 
 
 addBtn.addEventListener('click', e => {
@@ -34,7 +48,6 @@ addBtn.addEventListener('click', e => {
     input.value = '';
     
 });
-
 
 
 todo.addEventListener('click', e => {
@@ -79,6 +92,12 @@ todo.addEventListener('click', e => {
 
     }
 
+    if (e.target.classList.contains('js-checkbox')) {
+        const checkBoxId = +e.target.getAttribute('data-id');
+        const currentLi = findCurrentIdElement(allLi, checkBoxId);
+        currentLi.classList.toggle('checked');
+    }
+
 })
 
 
@@ -88,55 +107,13 @@ function findCurrentIdElement(allLi, searchId) {
     })
 }
 
-store.subscribe(() => {
-    render(store.getState());
-});
-
-
-// function saveToStore(data) {
-//     const {
-//         id,
-//         newValue
-//     } = data;
-
-//     store = store.map(elem => {
-//         if (elem.id === id) {
-//             elem.name = newValue;
-//             elem.id = id
-//         }
-
-//         return elem;
-//     })
-
-//     pubSub.emit('updated', {
-//         store
-//     });
-// }
 
 
 
-
-
-// function saveToLocalStorage() {
-//     const list = JSON.stringify(store);
-//     localStorage.setItem('list', list)
-
-// };
-
-// function updated(store) {
-//     render(store);
-//     saveToLocalStorage(store);
-// }
+function saveToLocalStorage() {
+    const list = JSON.stringify(store.getState());
+    localStorage.setItem('list', list)
+};
 
 
 
-
-
-
-// pubSub.subscribe('onLoad', onLoadHandler);
-// pubSub.subscribe('editTodo', saveToStore);
-// pubSub.subscribe('addTodo', addToStore);
-// pubSub.subscribe('delTask', deleteTask);
-// pubSub.subscribe('saveToStorage', saveToLocalStorage);
-// pubSub.subscribe('updated', updated);
-// pubSub.emit('onLoad');
