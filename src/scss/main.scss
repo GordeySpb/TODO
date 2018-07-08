@@ -7,6 +7,7 @@
     height: 100%;
     display: flex;
     justify-content: center;
+    overflow: hidden;
 }
 
 .container {
@@ -69,10 +70,11 @@
 .todo__list {
     display: flex;
     flex-direction: column;
-    width: 90%;
-    height: 400px;
     overflow: hidden;
+    width: 90%;
+    height: 450px;
     margin-bottom: 25px;
+    overflow-y: auto;
 }
 
 .todo__item {
