@@ -14,4 +14,11 @@ router.post('/api/addTodo', (req, res, next) => {
 	res.json(todos);
 });
 
+/**
+ * Получение массива todo
+ */
+router.get('/api/getTodos', (req, res, next) => {
+	res.json(todos);
+});
+
 module.exports = router;
