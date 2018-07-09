@@ -1,22 +1,17 @@
-const Router = require('koa-router');
+const express = require('express');
+const router = express.Router();
 
-const router = new Router();
+let todos = [];
 
-// render index page
-router.get('/api/testurl', async (ctx) => {
-	console.log(ctx.body);
+/**
+ * Method for adding todo
+ */
+router.post('/api/addTodo', (req, res, next) => {
+	const todo = req.body;
 
-	ctx.body = {
-		test: 10
-	}
-});
+	todos = [...todos, todo],
 
-router.post('/api/posttest', async (ctx) => {
-	console.log(ctx.request.body);
-
-	ctx.body = {
-		test: 'posttest'
-	}
+	res.json(todos);
 });
 
 module.exports = router;
