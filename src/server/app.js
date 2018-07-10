@@ -1,45 +1,40 @@
-const Koa = require('koa');
-
-const app = new Koa();
-
-const router = require('./routes');
-const views = require('koa-views');
-const json = require('koa-json');
-const onerror = require('koa-onerror');
-const bodyparser = require('koa-body');
-const koaStatic = require('koa-static');
-const logger = require('koa-logger');
-const debug = require('debug');
+const createError = require('http-errors');
+const express = require('express');
 const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
 
-const port = process.env.PORT || 3000;
-const root = `${__dirname}/../../`;
+const indexRouter = require('./routes');
 
-// debug
-debug('koa2:server');
+const app = express();
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+app.use(logger('dev'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', indexRouter);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
 
 // error handler
-onerror(app);
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-// middlewares
-app
-  .use(bodyparser())
-  .use(json())
-  .use(logger())
-  .use(koaStatic(`${root}/static`))
-  .use(views(`${root}/views`, {
-    options: { settings: { views: path.join(__dirname, 'views') } },
-    map: { pug: 'pug' },
-    extension: 'pug',
-  }))
-  .use(router.routes())
-  .use(router.allowedMethods());
-
-app.on('error', async (err, ctx) => {
-  console.log(err);
-  logger.error('server error', err, ctx);
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
 });
 
-app.listen(port, () => {
-  console.log(`Listening on http://localhost:${port}`);
-});
+module.exports = app;
