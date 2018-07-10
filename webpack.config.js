@@ -4,7 +4,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const config = {
-  entry: './src/index.js',
+  entry: './src/client/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
@@ -16,6 +16,13 @@ const config = {
       template: 'index.html'
     })
   ],
+
+  devServer: {
+  	port: 9000,
+    proxy: {
+      '/api/**': 'http://localhost:3000'
+    }
+  },
 
   mode: 'development',
   module: {
