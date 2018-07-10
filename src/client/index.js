@@ -12,6 +12,7 @@ const addBtn = document.querySelector('.todo__add-btn');
 const input = document.querySelector('.todo-input');
 
 
+
 store.subscribe(() => {
     render(store.getState());
     saveToLocalStorage(store);
@@ -44,6 +45,9 @@ addBtn.addEventListener('click', e => {
         name: input.value,
         id: Date.now()
     }))
+
+    
+
 
     input.value = '';
     
