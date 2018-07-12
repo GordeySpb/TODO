@@ -1,9 +1,8 @@
 import './scss/main.scss';
 import tempalte from './templates/todo.hbs';
-import pubSub from './helpers/pubsub.js';
 import store from './helpers/store';
 import {addTodosAction, addTodoAction, deleteAction, updateAction} from './helpers/actions';
-import {ADD_TODOS, ADD_TODO, DELETE, UPDATE} from './helpers/actions';
+
 
 
 
@@ -30,7 +29,7 @@ try {
 
 function render(store) {
     const html = tempalte({
-        items: store
+        items: store.todos
     })
 
     todo.innerHTML = html;
@@ -71,7 +70,7 @@ todo.addEventListener('click', e => {
     if (e.target.classList.contains('js-edit-btn')) {
         const editBtnId = +e.target.getAttribute('data-id');
         const currentLi = findCurrentIdElement(allLi, editBtnId);
-        const currentStateElement = store.getState().find(todo => todo.id === editBtnId);
+        const currentStateElement = store.getState().todos.find(todo => todo.id === editBtnId);
         const input = currentLi.querySelector('.todo__input');
         input.value = currentStateElement.name;
         currentLi.classList.add('todo__item_mode_edit');
@@ -115,7 +114,7 @@ function findCurrentIdElement(allLi, searchId) {
 
 
 function saveToLocalStorage() {
-    const list = JSON.stringify(store.getState());
+    const list = JSON.stringify(store.getState().todos);
     localStorage.setItem('list', list)
 };
 
