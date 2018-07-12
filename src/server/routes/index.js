@@ -26,22 +26,37 @@ router.post('/api/delTodo', (req, res, next) => {
 
 	todos = todos.filter((elem) => elem.id !== todo.id);
 
-	res.json(todo);
+	res.json({success: true});
 });
 
 router.post('/api/updateTodo', (req, res, next) => {
 	const todo = req.body;
 
-	todos = todos.map((elem) => {
-		if (elem.id === todo.id) {
-			elem.name = todo.name;
+
+	todos = todos.map((item) => {
+		if (item.id === todo.id) {
+			item.name = todo.name;
 		}
 
-		return elem
+		return item;
 	});
 
-	res.json(todo);
+	res.json({success: true});
 });
+
+router.post('/api/toggleComplete', (req, res, next) => {
+	const todo = req.body;
+
+	todos = todos.map((item) => {
+		if (item.id === todo.id) {
+			item.completed = !item.completed;
+		}
+
+		return item;
+	});
+
+	res.json({success: true});
+})
 
 
 

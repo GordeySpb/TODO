@@ -7,6 +7,7 @@ import {ADD_TODOS, ADD_TODO, DELETE, UPDATE} from './helpers/actions';
 
 
 
+
 const todo = document.querySelector('.todo__list');
 const addBtn = document.querySelector('.todo__add-btn');
 const input = document.querySelector('.todo-input');
@@ -45,10 +46,9 @@ addBtn.addEventListener('click', e => {
         name: input.value,
         id: Date.now()
     }))
-
     
-
-
+      
+      
     input.value = '';
     
 });
