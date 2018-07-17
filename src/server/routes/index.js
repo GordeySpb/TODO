@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-let todos = [];
+let todos = ['1', '2', '3'];
 
 
 /**
@@ -56,6 +56,10 @@ router.post('/api/toggleComplete', (req, res, next) => {
 	});
 
 	res.json({success: true});
+})
+
+router.get('/api/getTodos', (req, res, next) => {
+	res.json(todos)
 })
 
 

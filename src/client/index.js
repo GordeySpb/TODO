@@ -1,15 +1,14 @@
-import './scss/main.scss';
+import './styls/main.scss';
 import tempalte from './templates/todo.hbs';
 import store from './helpers/store';
-import {addTodosAction, addTodoAction, deleteAction, updateAction} from './helpers/actions';
-
-
+import {addTodosAction, addTodoAction, deleteAction, updateAction, asyncGetTodosAction} from './helpers/actions';
 
 
 
 const todo = document.querySelector('.todo__list');
 const addBtn = document.querySelector('.todo__add-btn');
 const input = document.querySelector('.todo-input');
+const preloader = document.querySelector('.js-preloader');
 
 
 
@@ -32,6 +31,9 @@ function render(store) {
         items: store.todos
     })
 
+    
+
+    togglePreloader(store.preloader);
     todo.innerHTML = html;
 
 };
@@ -46,7 +48,6 @@ addBtn.addEventListener('click', e => {
         id: Date.now()
     }))
     
-      
       
     input.value = '';
     
@@ -108,7 +109,7 @@ function findCurrentIdElement(allLi, searchId) {
     return Array.prototype.find.call(allLi, (elem) => {
         return +elem.getAttribute('data-id') === searchId;
     })
-}
+};
 
 
 
@@ -117,6 +118,13 @@ function saveToLocalStorage() {
     const list = JSON.stringify(store.getState().todos);
     localStorage.setItem('list', list)
 };
+
+function togglePreloader(condition) {  
+    condition ? preloader.classList.remove('hidden') :  preloader.classList.add('hidden');
+};
+
+store.dispatch(asyncGetTodosAction())
+
 
 
 

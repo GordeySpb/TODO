@@ -1,8 +1,13 @@
-import {createStore, dispatch} from 'redux';
+import {createStore, dispatch, applyMiddleware} from 'redux';
 import reducer from '../reducers';
-import {ADD_TODOS, ADD_TODO, DELETE, UPDATE} from './actions';
+import thunk from 'redux-thunk';
 
 
-const store = createStore(reducer);
+
+
+const store = createStore(reducer, applyMiddleware(thunk));
+
+
+
 
 module.exports = store;
