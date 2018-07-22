@@ -1,4 +1,4 @@
-import {ADD_TODOS, ADD_TODO, DELETE, UPDATE} from '../helpers/actions';
+import {ADD_TODOS, ADD_TODO, DELETE, UPDATE, TOGGLE_TODO} from '../helpers/actions';
 
 const initialState = [];
 
@@ -19,6 +19,16 @@ export default function todos(state = initialState, {type, payload}) {
                 }
                 return elem;
             })
+        case TOGGLE_TODO:
+            return state = state.map((item) => {
+                
+                if (item.id === payload.id) {
+                    return Object.assign({}, item, {
+                        completed: !item.completed
+                    })
+                }
+                return item;
+            }) 
         default:
            return state; 
     }

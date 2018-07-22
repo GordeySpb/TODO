@@ -1,1 +1,1 @@
-export {getTodos} from './requests';
+export {getTodos, addTodo, delTodo, updateTodo, toggleComplete} from './requests';

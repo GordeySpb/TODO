@@ -1,10 +1,22 @@
 {{#each items}}
-<li class="todo__item" data-id="{{id}}">
-    <input type="checkbox" class="todo-checkbox js-checkbox" data-id="{{id}}">
-    <div class="todo__name">{{name}}</div>
-    <input type="text" class="todo__input">
-    <button class="btn todo__edit-btn js-edit-btn" data-id="{{id}}">Edit</button>
-    <button class="btn todo__save-btn js-save-btn" data-id="{{id}}">Save</button>
-    <button class="btn todo__delete-btn js-delete-btn" data-id="{{id}}">Delete</button>
-</li>
+    {{#if completed}}
+        <li class="todo__item checked" data-id="{{id}}">
+            <input type="checkbox" checked="checked" class="todo-checkbox js-checkbox" data-id="{{id}}">
+            <div class="todo__name">{{name}}</div>
+            <input type="text" class="todo__input">
+            <button class="btn todo__edit-btn js-edit-btn" data-id="{{id}}">Edit</button>
+            <button class="btn todo__save-btn js-save-btn" data-id="{{id}}">Save</button>
+            <button class="btn todo__delete-btn js-delete-btn" data-id="{{id}}">Delete</button>
+        </li>
+    {{else}}
+        <li class="todo__item" data-id="{{id}}">
+            <input type="checkbox"  class="todo-checkbox js-checkbox" data-id="{{id}}">
+            <div class="todo__name">{{name}}</div>
+            <input type="text" class="todo__input">
+            <button class="btn todo__edit-btn js-edit-btn" data-id="{{id}}">Edit</button>
+            <button class="btn todo__save-btn js-save-btn" data-id="{{id}}">Save</button>
+            <button class="btn todo__delete-btn js-delete-btn" data-id="{{id}}">Delete</button>
+        </li>    
+    {{/if}}
+    
 {{/each}}

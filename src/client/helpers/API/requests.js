@@ -1,5 +1,4 @@
-import fetchPostFactory from './factory';
-import fetcFactory from './factory';
+import {fetchFactory, fetchPostFactory} from './factory';
 
 export function addTodo(params) {
     return fetchPostFactory('/api/addTodo', params)
@@ -18,5 +17,6 @@ export function toggleComplete(params) {
 }
 
 export function getTodos() {
-    return fetcFactory('/api/getTodos', {})
+    return fetchFactory('/api/getTodos', {})
+        .then(res => res.json())
 }

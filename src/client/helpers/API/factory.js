@@ -1,16 +1,15 @@
-export const fetcFactory = (url, params) => { 
+export const fetchFactory = (url, params) => { 
 	return fetch(url, params)
 }
 
 export const fetchPostFactory = (url, params) => {
-	return fetcFactory(url, {
+	return fetchFactory(url, {
 		method: 'POST',
 		headers: {
 		  'Content-Type': 'application/json'
 		},
-		body: params
-
-		.then((res) => res.json())
-		
+		body: JSON.stringify(params)
 	})
+
+	.then((res) => res.json())
 }

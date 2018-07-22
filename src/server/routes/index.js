@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-let todos = ['1', '2', '3'];
+let todos = [];
 
 
 /**
@@ -18,7 +18,9 @@ router.post('/api/addTodo', (req, res, next) => {
 
 	todos = [...todos, todo],
 
-	res.json(todo);
+	setTimeout(() => {
+		res.json(todo);
+	},300)
 });
 
 router.post('/api/delTodo', (req, res, next) => {
@@ -26,7 +28,9 @@ router.post('/api/delTodo', (req, res, next) => {
 
 	todos = todos.filter((elem) => elem.id !== todo.id);
 
-	res.json({success: true});
+	setTimeout(() => {
+		res.json({success: true});
+	}, 300)
 });
 
 router.post('/api/updateTodo', (req, res, next) => {
@@ -41,7 +45,11 @@ router.post('/api/updateTodo', (req, res, next) => {
 		return item;
 	});
 
-	res.json({success: true});
+	const newTodo = todos.find((elem) => elem.id === todo.id);
+
+	setTimeout(() => {
+		res.json({success: true, todo: newTodo});
+	}, 300)
 });
 
 router.post('/api/toggleComplete', (req, res, next) => {
@@ -55,15 +63,12 @@ router.post('/api/toggleComplete', (req, res, next) => {
 		return item;
 	});
 
-	res.json({success: true});
+	const newTodo = todos.find((elem) => elem.id === todo.id);
+
+	setTimeout(() => {
+		res.json({success: false, todo: newTodo});
+	}, 300)
 })
-
-router.get('/api/getTodos', (req, res, next) => {
-	res.json(todos)
-})
-
-
-
 
 
 
@@ -72,7 +77,10 @@ router.get('/api/getTodos', (req, res, next) => {
  * Getting todos
  */
 router.get('/api/getTodos', (req, res, next) => {
-	res.json(todos);
+
+	setTimeout(()=> {
+		res.json(todos);
+	},500)
 });
 
 module.exports = router;
