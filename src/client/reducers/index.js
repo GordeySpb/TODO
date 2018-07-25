@@ -5,7 +5,7 @@ import preloader from './preloader';
 import error from './error';
 
 export default combineReducers({
-    todos,
-    preloader,
-    error
-})
+  todos,
+  preloader,
+  error,
+});
