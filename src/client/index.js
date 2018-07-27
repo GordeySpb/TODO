@@ -2,19 +2,19 @@ import './styls/main.scss';
 import tempalte from './templates/todo.hbs';
 import store from './helpers/store';
 import {
-  GetTodos,
-  AddTodo,
-  DelTodo,
-  UpdateTodo,
-  ToggleComplete,
+  getTodos,
+  addTodo,
+  delTodo,
+  updateTodo,
+  toggleComplete,
   toggleErrorAction,
 } from './helpers/actions';
 
 const todo = document.querySelector('.todo__list');
 const addBtn = document.querySelector('.todo__add-btn');
 const input = document.querySelector('.todo-input');
-const preloader = document.querySelector('.js-preloader');
-const error = document.querySelector('.todo-error-js ');
+const preloaderBlock = document.querySelector('.js-preloader');
+const errorBlock = document.querySelector('.todo-error-js ');
 const errorBtn = document.querySelector('.error-btn');
 
 /**
@@ -33,7 +33,9 @@ function findCurrentIdElement(allLi, searchId) {
  * @param {Boolean} condition состояние
  */
 function togglePreloader(condition) {
-  return condition ? preloader.classList.remove('hidden') : preloader.classList.add('hidden');
+  return condition
+    ? preloaderBlock.classList.remove('hidden')
+    : preloaderBlock.classList.add('hidden');
 }
 
 /**
@@ -41,7 +43,7 @@ function togglePreloader(condition) {
  * @param {Boolean} condition состояние
  */
 function toggleError(condition) {
-  return condition ? error.classList.remove('hidden') : error.classList.add('hidden');
+  return condition ? errorBlock.classList.remove('hidden') : errorBlock.classList.add('hidden');
 }
 
 /**
@@ -50,15 +52,15 @@ function toggleError(condition) {
  * store - хранилище данных
  */
 
-function render(store) {
+function render({ todos, preloader, error }) {
   const html = tempalte({
-    items: store.todos,
+    items: todos,
   });
 
   todo.innerHTML = html;
 
-  togglePreloader(store.preloader);
-  toggleError(store.error);
+  togglePreloader(preloader);
+  toggleError(error);
 }
 
 store.subscribe(() => {
@@ -68,7 +70,11 @@ store.subscribe(() => {
 addBtn.addEventListener('click', () => {
   if (input.value === '') return;
 
-  store.dispatch(AddTodo({ name: input.value }));
+  store.dispatch(
+    addTodo({
+      name: input.value,
+    }),
+  );
 
   input.value = '';
 });
@@ -86,7 +92,7 @@ todo.addEventListener('click', (e) => {
     const deleteBtnId = +e.target.getAttribute('data-id');
     const currentStateElement = store.getState().todos.find(item => item.id === deleteBtnId);
 
-    store.dispatch(DelTodo(currentStateElement));
+    store.dispatch(delTodo(currentStateElement));
   }
 
   if (e.target.classList.contains('js-edit-btn')) {
@@ -105,15 +111,24 @@ todo.addEventListener('click', (e) => {
     const CurrentInput = currentLi.querySelector('.todo__input');
     const newValue = CurrentInput.value;
 
-    store.dispatch(UpdateTodo({ id, name: newValue }));
+    store.dispatch(
+      updateTodo({
+        id,
+        name: newValue,
+      }),
+    );
 
     currentLi.classList.remove('todo__item_mode_edit');
   }
 
   if (e.target.classList.contains('js-checkbox')) {
     const checkBoxId = +e.target.getAttribute('data-id');
-    store.dispatch(ToggleComplete({ id: checkBoxId }));
+    store.dispatch(
+      toggleComplete({
+        id: checkBoxId,
+      }),
+    );
   }
 });
 
-store.dispatch(GetTodos());
+store.dispatch(getTodos());

@@ -1,3 +1,7 @@
 export {
-  getTodos, addTodo, delTodo, updateTodo, toggleComplete,
+  getTodosRequest,
+  addTodoRequest,
+  delTodoRequest,
+  updateTodoRequest,
+  toggleCompleteRequest,
 } from './requests';
