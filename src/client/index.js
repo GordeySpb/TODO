@@ -97,9 +97,9 @@ function deleteTask({ target }) {
 /**
  * Функция редактирует выбранную задачу
  * @param {object} e событие
+ * @param {object} allLI все задачи
  *
  */
-
 function editTask({ target }, allLi) {
   const editBtnId = +target.getAttribute('data-id');
   const currentLi = findCurrentIdElement(allLi, editBtnId);
@@ -108,7 +108,12 @@ function editTask({ target }, allLi) {
   CurrentInput.value = currentStateElement.name;
   currentLi.classList.add('todo__item_mode_edit');
 }
-
+/**
+ * Функция сохраняет новое название задачи выбранную задачу
+ * @param {object} e событие
+ * @param {object} allLI все задачи
+ *
+ */
 function saveTask({ target }, allLi) {
   const saveBtnId = +target.getAttribute('data-id');
   const currentLi = findCurrentIdElement(allLi, saveBtnId);
@@ -125,7 +130,11 @@ function saveTask({ target }, allLi) {
 
   currentLi.classList.remove('todo__item_mode_edit');
 }
-
+/**
+ * Функция отмечает задачу как выбранную
+ * @param {object} e событие
+ *
+ */
 function toggleTask({ target }) {
   const checkBoxId = +target.getAttribute('data-id');
   store.dispatch(
