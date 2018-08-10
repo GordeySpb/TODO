@@ -15,9 +15,7 @@ export default function todos(state = initialState, { type, payload }) {
     case TOGGLE:
       return state.map((item) => {
         if (item.id === payload.id) {
-          return {
-            ...payload,
-          };
+          return { ...payload };
         }
         return item;
       });

@@ -55,7 +55,7 @@ router.post('/api/toggleComplete', (req, res) => {
 
   todos = todos.map((item) => {
     if (item.id === todo.id) {
-      return { ...item, completed: !todo.completed };
+      return { ...item, completed: !item.completed };
     }
     return item;
   });

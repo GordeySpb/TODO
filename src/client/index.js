@@ -84,50 +84,73 @@ errorBtn.addEventListener('click', (e) => {
 
   store.dispatch(toggleErrorAction(false));
 });
+/**
+ * Функция удаляет выбранную задачу
+ * @param {object} e событие
+ */
+function deleteTask({ target }) {
+  const deleteBtnId = +target.getAttribute('data-id');
+  const currentStateElement = store.getState().todos.find(item => item.id === deleteBtnId);
+
+  store.dispatch(delTodo(currentStateElement));
+}
+/**
+ * Функция редактирует выбранную задачу
+ * @param {object} e событие
+ *
+ */
+
+function editTask({ target }, allLi) {
+  const editBtnId = +target.getAttribute('data-id');
+  const currentLi = findCurrentIdElement(allLi, editBtnId);
+  const currentStateElement = store.getState().todos.find(item => item.id === editBtnId);
+  const CurrentInput = currentLi.querySelector('.todo__input');
+  CurrentInput.value = currentStateElement.name;
+  currentLi.classList.add('todo__item_mode_edit');
+}
+
+function saveTask({ target }, allLi) {
+  const saveBtnId = +target.getAttribute('data-id');
+  const currentLi = findCurrentIdElement(allLi, saveBtnId);
+  const id = +currentLi.getAttribute('data-id');
+  const CurrentInput = currentLi.querySelector('.todo__input');
+  const newValue = CurrentInput.value;
+
+  store.dispatch(
+    updateTodo({
+      id,
+      name: newValue,
+    }),
+  );
+
+  currentLi.classList.remove('todo__item_mode_edit');
+}
+
+function toggleTask({ target }) {
+  const checkBoxId = +target.getAttribute('data-id');
+  store.dispatch(
+    toggleComplete({
+      id: checkBoxId,
+    }),
+  );
+}
 
 todo.addEventListener('click', (e) => {
   const allLi = document.querySelectorAll('.todo__item');
-
   if (e.target.classList.contains('todo__delete-btn')) {
-    const deleteBtnId = +e.target.getAttribute('data-id');
-    const currentStateElement = store.getState().todos.find(item => item.id === deleteBtnId);
-
-    store.dispatch(delTodo(currentStateElement));
+    deleteTask(e);
   }
 
   if (e.target.classList.contains('js-edit-btn')) {
-    const editBtnId = +e.target.getAttribute('data-id');
-    const currentLi = findCurrentIdElement(allLi, editBtnId);
-    const currentStateElement = store.getState().todos.find(item => item.id === editBtnId);
-    const CurrentInput = currentLi.querySelector('.todo__input');
-    CurrentInput.value = currentStateElement.name;
-    currentLi.classList.add('todo__item_mode_edit');
+    editTask(e, allLi);
   }
 
   if (e.target.classList.contains('js-save-btn')) {
-    const saveBtnId = +e.target.getAttribute('data-id');
-    const currentLi = findCurrentIdElement(allLi, saveBtnId);
-    const id = +currentLi.getAttribute('data-id');
-    const CurrentInput = currentLi.querySelector('.todo__input');
-    const newValue = CurrentInput.value;
-
-    store.dispatch(
-      updateTodo({
-        id,
-        name: newValue,
-      }),
-    );
-
-    currentLi.classList.remove('todo__item_mode_edit');
+    saveTask(e, allLi);
   }
 
   if (e.target.classList.contains('js-checkbox')) {
-    const checkBoxId = +e.target.getAttribute('data-id');
-    store.dispatch(
-      toggleComplete({
-        id: checkBoxId,
-      }),
-    );
+    toggleTask(e);
   }
 });
 
